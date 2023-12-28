@@ -1,4 +1,4 @@
-package somepackage;
+package org.example;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
