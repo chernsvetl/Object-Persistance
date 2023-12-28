@@ -13,7 +13,6 @@ public final class ConfigDataSource {
     private final Properties properties = loadConfig();
 
     private static final String CONFIG_NAME = "persistence.properties";
-    private static final String TYPE = "persistence.type";
     private static final String URL = "persistence.url";
     private static final String USERNAME = "persistence.username";
     private static final String PASSWORD = "persistence.password";
@@ -41,18 +40,8 @@ public final class ConfigDataSource {
         if (prop.isEmpty()) {
             throw new ValidationException("Config file is empty");
         }
-        validateProperties(prop, TYPE, URL, USERNAME, PASSWORD, IS_INIT, THREAD_POOL_SIZE);
-        if (getDataSourceType(prop).equals(DbTypes.RELATIONAL)) {
-            validateProperties(prop, DRIVER);
-        }
-    }
-
-    private DbTypes getDataSourceType(Properties prop) {
-        return DbTypes.getType(prop.getProperty(TYPE));
-    }
-
-    public DbTypes getDataSourceType() {
-        return getDataSourceType(properties);
+        validateProperties(prop, URL, USERNAME, PASSWORD, IS_INIT, THREAD_POOL_SIZE);
+        validateProperties(prop, DRIVER);
     }
 
     public String getDataSourceUrl() {

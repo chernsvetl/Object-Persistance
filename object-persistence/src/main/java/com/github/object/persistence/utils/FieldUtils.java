@@ -1,6 +1,6 @@
 package com.github.object.persistence.utils;
 
-import com.github.object.persistence.core.EntityCash;
+import com.github.object.persistence.core.EntityCache;
 
 import java.lang.reflect.Field;
 
@@ -21,10 +21,10 @@ public class FieldUtils {
     }
 
     public static String getTableNameOfFieldClass(Field field) {
-        return EntityCash.getEntityInfo(field.getType()).getEntityName();
+        return EntityCache.getEntityInfo(field.getType()).getEntityName();
     }
 
     public static Field getIdField(Class<?> kClass) {
-        return EntityCash.getEntityInfo(kClass).getIdField();
+        return EntityCache.getEntityInfo(kClass).getIdField();
     }
 }

@@ -1,7 +1,7 @@
 package com.github.object.persistence.session.impl;
 
-import com.github.object.persistence.EntityInfo;
-import com.github.object.persistence.core.EntityCash;
+import com.github.object.persistence.core.EntityInfo;
+import com.github.object.persistence.core.EntityCache;
 import com.github.object.persistence.core.ProxyObject;
 import com.github.object.persistence.exception.ExecuteException;
 import com.github.object.persistence.session.DataSourceWrapper;
@@ -137,7 +137,7 @@ public class FromSqlToObjectMapper<R extends Connection> {
         try (PreparedStatement statement = wrapper.getSource()
                 .prepareStatement(script, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)) {
             ResultSet resultSet = statement.executeQuery();
-            EntityInfo<T> info = EntityCash.getEntityInfo(entityClass);
+            EntityInfo<T> info = EntityCache.getEntityInfo(entityClass);
             while (resultSet.next()) {
                 Object idValue = resultSet.getObject(info.getIdField().getName());
                 cascadeDeleteChildRelations(wrapper, entityClass, idValue);
@@ -191,7 +191,7 @@ public class FromSqlToObjectMapper<R extends Connection> {
     }
 
     private <T> T getWithStatement(DataSourceWrapper<R> wrapper, T entity, ResultSet resultSet) throws SQLException {
-        EntityInfo<T> info = EntityCash.getEntityInfo(entity);
+        EntityInfo<T> info = EntityCache.getEntityInfo(entity);
 
         for (Field field : info.getNoRelationFields()) {
             Object tableValue = resultSet.getObject(field.getName());
@@ -217,7 +217,7 @@ public class FromSqlToObjectMapper<R extends Connection> {
             if (ReflectionUtils.getValueFromField(entity, field) == null) {
                 Object idValue = ReflectionUtils.getValueFromField(entity, info.getIdField());
                 Field targetField = getParentMappedByField(
-                        EntityCash.getEntityInfo(field.getType()).getOneToOneFields(true),
+                        EntityCache.getEntityInfo(field.getType()).getOneToOneFields(true),
                         entity.getClass(),
                         field.getAnnotation(OneToOne.class).mappedBy()
                 );
@@ -251,7 +251,7 @@ public class FromSqlToObjectMapper<R extends Connection> {
             Object idValue = ReflectionUtils.getValueFromField(entity, info.getIdField());
             Class<?> parentClass = ReflectionUtils.getGenericType(field);
             Field targetField = getParentMappedByField(
-                    EntityCash.getEntityInfo(parentClass).getManyToOneFields(),
+                    EntityCache.getEntityInfo(parentClass).getManyToOneFields(),
                     entity.getClass(),
                     field.getAnnotation(OneToMany.class).mappedBy()
             );
@@ -276,7 +276,7 @@ public class FromSqlToObjectMapper<R extends Connection> {
             String predicate
     ) {
         Class<?> childClass = childField.getType();
-        EntityInfo<?> info = EntityCash.getEntityInfo(childClass);
+        EntityInfo<?> info = EntityCache.getEntityInfo(childClass);
         Supplier<?> supplier = () -> {
             String script = generator.getFromTableWithPredicate(childClass, Optional.of(predicate));
             try (PreparedStatement statement = wrapper.getSource()
@@ -325,7 +325,7 @@ public class FromSqlToObjectMapper<R extends Connection> {
             Field collectionField,
             String predicate
     ) {
-        EntityInfo<T> parentInfo = EntityCash.getEntityInfo(parentClass);
+        EntityInfo<T> parentInfo = EntityCache.getEntityInfo(parentClass);
         Supplier<Collection<T>> supplier = () -> {
             String script = generator.getFromTableWithPredicate(parentClass, Optional.ofNullable(predicate));
             try (PreparedStatement statement = wrapper.getSource()
@@ -382,7 +382,8 @@ public class FromSqlToObjectMapper<R extends Connection> {
             }
         };
 
-        return checkFetchTypeAndGet(EntityCash.getEntityInfo(parentClass), supplier, parentField.getAnnotation(OneToOne.class).fetch());
+        return checkFetchTypeAndGet(
+                EntityCache.getEntityInfo(parentClass), supplier, parentField.getAnnotation(OneToOne.class).fetch());
     }
 
     private Object getOneToOneParent(
@@ -392,7 +393,7 @@ public class FromSqlToObjectMapper<R extends Connection> {
             String predicate
     ) {
         Class<?> childClass = childField.getType();
-        EntityInfo<?> info = EntityCash.getEntityInfo(childClass);
+        EntityInfo<?> info = EntityCache.getEntityInfo(childClass);
         Supplier<?> supplier = () -> {
             String script = generator.getFromTableWithPredicate(childClass, Optional.ofNullable(predicate));
             Field oneToOneChild = getChildMappedByField(info.getOneToOneFields(false), parentValue.getClass(),
@@ -500,7 +501,7 @@ public class FromSqlToObjectMapper<R extends Connection> {
     }
 
     private Map<String, Object> prepareEntityFieldValues(Object entity) {
-        EntityInfo<?> info = EntityCash.getEntityInfo(entity.getClass());
+        EntityInfo<?> info = EntityCache.getEntityInfo(entity.getClass());
 
         Map<String, Object> oneToOneValues = handleParentRelation(info.getOneToOneFields(true), entity);
         Map<String, Object> manyToOneValues = handleParentRelation(info.getManyToOneFields(), entity);
@@ -523,7 +524,7 @@ public class FromSqlToObjectMapper<R extends Connection> {
     }
 
     private void handleOneToManyForInsert(Object entity, DataSourceWrapper<R> wrapper) {
-        Set<Field> oneToMany = EntityCash.getEntityInfo(entity).getOneToManyFields();
+        Set<Field> oneToMany = EntityCache.getEntityInfo(entity).getOneToManyFields();
 
         if (!oneToMany.isEmpty()) {
             for (Field field : oneToMany) {
@@ -536,7 +537,7 @@ public class FromSqlToObjectMapper<R extends Connection> {
     }
 
     private void handleOneToManyForUpdate(Object entity, DataSourceWrapper<R> wrapper) {
-        Set<Field> oneToMany = EntityCash.getEntityInfo(entity).getOneToManyFields();
+        Set<Field> oneToMany = EntityCache.getEntityInfo(entity).getOneToManyFields();
 
         if (!oneToMany.isEmpty()) {
             for (Field field : oneToMany) {
@@ -553,7 +554,7 @@ public class FromSqlToObjectMapper<R extends Connection> {
             DataSourceWrapper<R> wrapper,
             BiFunction<DataSourceWrapper<R>, Object, Long> nextFunction
     ) {
-        Set<Field> oneToOne = EntityCash.getEntityInfo(entity).getOneToOneFields(false);
+        Set<Field> oneToOne = EntityCache.getEntityInfo(entity).getOneToOneFields(false);
 
         if (!oneToOne.isEmpty()) {
             for (Field field : oneToOne) {
@@ -568,12 +569,12 @@ public class FromSqlToObjectMapper<R extends Connection> {
     private void cascadeDeleteChildRelations(
             DataSourceWrapper<R> wrapper, Class<?> entityClass, Object id
     ) {
-        EntityInfo<?> info = EntityCash.getEntityInfo(entityClass);
+        EntityInfo<?> info = EntityCache.getEntityInfo(entityClass);
         Map<Class<?>, Deque<String>> result = new HashMap<>();
 
         for (Field field : info.getOneToOneFields(false)) {
             Field targetField = getParentMappedByField(
-                    EntityCash.getEntityInfo(field.getType()).getOneToOneFields(true),
+                    EntityCache.getEntityInfo(field.getType()).getOneToOneFields(true),
                     entityClass,
                     field.getAnnotation(OneToOne.class).mappedBy()
             );
@@ -587,7 +588,7 @@ public class FromSqlToObjectMapper<R extends Connection> {
         for (Field field : info.getOneToManyFields()) {
             Class<?> collectionClass = ReflectionUtils.getGenericType(field);
             Field targetField = getParentMappedByField(
-                    EntityCash.getEntityInfo(collectionClass).getManyToOneFields(),
+                    EntityCache.getEntityInfo(collectionClass).getManyToOneFields(),
                     entityClass,
                     field.getAnnotation(OneToMany.class).mappedBy()
             );

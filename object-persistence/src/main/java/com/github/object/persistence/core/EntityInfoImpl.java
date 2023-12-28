@@ -1,6 +1,5 @@
 package com.github.object.persistence.core;
 
-import com.github.object.persistence.EntityInfo;
 import com.github.object.persistence.exception.FieldNotFoundInEntityException;
 import com.github.object.persistence.utils.StringUtils;
 import net.sf.cglib.proxy.Enhancer;

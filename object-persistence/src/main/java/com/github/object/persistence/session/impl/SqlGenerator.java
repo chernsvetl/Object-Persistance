@@ -1,7 +1,7 @@
 package com.github.object.persistence.session.impl;
 
-import com.github.object.persistence.EntityInfo;
-import com.github.object.persistence.core.EntityCash;
+import com.github.object.persistence.core.EntityInfo;
+import com.github.object.persistence.core.EntityCache;
 import com.github.object.persistence.utils.FieldUtils;
 import com.github.object.persistence.utils.StringUtils;
 
@@ -51,7 +51,7 @@ public class SqlGenerator {
      * @return сгенерированный SQL-код
      */
     public <T> String createTable(Class<T> entityClass) {
-        EntityInfo<?> info = EntityCash.getEntityInfo(entityClass);
+        EntityInfo<?> info = EntityCache.getEntityInfo(entityClass);
         Stream<String> parentRelation = Stream.concat(
                 info.getOneToOneFields(true).stream()
                         .map(field -> StringUtils.separateWithSpace(
@@ -99,7 +99,7 @@ public class SqlGenerator {
      * @return сгенерированный SQL-код
      */
     public String insertRecord(Class<?> entity, Set<String> columnNames) {
-        EntityInfo<?> info = EntityCash.getEntityInfo(entity);
+        EntityInfo<?> info = EntityCache.getEntityInfo(entity);
         String firstPartOfScript = prepareScriptWithColumns(
                 columnNames.stream(),
                 String.format(INSERT_INTO, info.getEntityName()),
@@ -115,7 +115,7 @@ public class SqlGenerator {
     }
 
     public String insertRecords(Class<?> recordItemClass, int sizeOfItems, Set<String> columnNames) {
-        EntityInfo<?> info = EntityCash.getEntityInfo(recordItemClass);
+        EntityInfo<?> info = EntityCache.getEntityInfo(recordItemClass);
         String firstPartOfScript = prepareScriptWithColumns(
                 columnNames.stream(),
                 String.format(INSERT_INTO, info.getEntityName()),
@@ -133,13 +133,13 @@ public class SqlGenerator {
     }
 
     String getFromTableWithPredicate(Class<?> kClass, Optional<String> predicate) {
-        EntityInfo<?> info = EntityCash.getEntityInfo(kClass);
+        EntityInfo<?> info = EntityCache.getEntityInfo(kClass);
         return predicate.map(s -> createWithWhereScript(String.format(SELECT, info.getEntityName()), s))
                 .orElseGet(() -> String.format(SELECT, info.getEntityName()));
     }
 
     String deleteByPredicate(Class<?> kClass, String predicate) {
-        EntityInfo<?> info = EntityCash.getEntityInfo(kClass);
+        EntityInfo<?> info = EntityCache.getEntityInfo(kClass);
         return createWithWhereScript(String.format(DELETE, info.getEntityName()), predicate);
     }
 
@@ -148,7 +148,7 @@ public class SqlGenerator {
     }
 
     String updateByPredicate(Class<?> kClass, Set<String> columnNames, Optional<String> predicate) {
-        EntityInfo<?> info = EntityCash.getEntityInfo(kClass);
+        EntityInfo<?> info = EntityCache.getEntityInfo(kClass);
         String update = StringUtils.separateWithSpace(
                 String.format(UPDATE, info.getEntityName()),
                 SET,
@@ -162,7 +162,7 @@ public class SqlGenerator {
     }
 
     private String prepareForeignKeyReference(Field field) {
-        EntityInfo<?> info = EntityCash.getEntityInfo(field.getType());
+        EntityInfo<?> info = EntityCache.getEntityInfo(field.getType());
         String entityName = info.getEntityName();
         String idName = info.getIdField().getName();
         return String.format(FOREIGN_KEY, FieldUtils.getForeignKeyName(field), entityName, idName);
