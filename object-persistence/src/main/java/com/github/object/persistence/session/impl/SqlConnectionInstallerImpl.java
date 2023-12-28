@@ -1,6 +1,6 @@
 package com.github.object.persistence.session.impl;
 
-import com.github.object.persistence.core.ConfigDataSource;
+import com.github.object.persistence.config.ConfigDataSource;
 import com.github.object.persistence.exception.InstallConnectionException;
 import com.github.object.persistence.session.ConnectionInstaller;
 import com.github.object.persistence.session.DataSourceWrapper;

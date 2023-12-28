@@ -7,8 +7,8 @@ import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.github.object.persistence.criteria.Predicate;
-import com.github.object.persistence.criteria.PredicateBuilder;
+import com.github.object.persistence.query.Predicate;
+import com.github.object.persistence.query.PredicateBuilder;
 
 /**
  * Тестовые сценарии проверки класса {@link PredicateBuilderSqlImpl}.

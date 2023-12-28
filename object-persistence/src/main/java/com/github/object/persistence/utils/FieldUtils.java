@@ -1,6 +1,6 @@
 package com.github.object.persistence.utils;
 
-import com.github.object.persistence.core.EntityCache;
+import com.github.object.persistence.entity.EntityCache;
 
 import java.lang.reflect.Field;
 

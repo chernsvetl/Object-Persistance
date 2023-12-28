@@ -1,7 +1,7 @@
-package com.github.object.persistence.criteria.impl;
+package com.github.object.persistence.query.impl;
 
-import com.github.object.persistence.criteria.Predicate;
-import com.github.object.persistence.criteria.Query;
+import com.github.object.persistence.query.Predicate;
+import com.github.object.persistence.query.Query;
 import com.github.object.persistence.session.AbstractSession;
 
 import java.util.*;

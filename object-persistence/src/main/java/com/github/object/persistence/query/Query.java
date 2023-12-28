@@ -1,4 +1,4 @@
-package com.github.object.persistence.criteria;
+package com.github.object.persistence.query;
 
 import java.util.List;
 import java.util.Map;

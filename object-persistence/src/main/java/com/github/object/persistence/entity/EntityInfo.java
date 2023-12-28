@@ -1,4 +1,4 @@
-package com.github.object.persistence.core;
+package com.github.object.persistence.entity;
 
 import net.sf.cglib.proxy.MethodInterceptor;
 

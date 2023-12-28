@@ -1,7 +1,7 @@
 package com.github.object.persistence.session;
 
-import com.github.object.persistence.criteria.Query;
-import com.github.object.persistence.criteria.impl.QueryImpl;
+import com.github.object.persistence.query.Query;
+import com.github.object.persistence.query.impl.QueryImpl;
 
 import java.util.List;
 import java.util.Map;

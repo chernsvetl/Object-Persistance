@@ -1,4 +1,4 @@
-package com.github.object.persistence.core;
+package com.github.object.persistence.entity;
 
 import com.google.auto.service.AutoService;
 import org.atteo.classindex.ClassIndex;

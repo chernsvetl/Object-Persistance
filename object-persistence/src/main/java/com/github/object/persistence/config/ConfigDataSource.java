@@ -1,4 +1,4 @@
-package com.github.object.persistence.core;
+package com.github.object.persistence.config;
 
 
 import com.github.object.persistence.exception.ValidationException;

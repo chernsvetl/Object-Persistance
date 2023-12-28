@@ -2,8 +2,8 @@ package com.github.object.persistence.persistence.sql.impl.criteria;
 
 import java.util.Set;
 
-import com.github.object.persistence.criteria.Predicate;
-import com.github.object.persistence.criteria.PredicateBuilder;
+import com.github.object.persistence.query.Predicate;
+import com.github.object.persistence.query.PredicateBuilder;
 
 
 public final class PredicateSqlImpl implements Predicate {

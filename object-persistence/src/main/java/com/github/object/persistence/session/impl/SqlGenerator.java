@@ -1,7 +1,7 @@
 package com.github.object.persistence.session.impl;
 
-import com.github.object.persistence.core.EntityInfo;
-import com.github.object.persistence.core.EntityCache;
+import com.github.object.persistence.entity.EntityInfo;
+import com.github.object.persistence.entity.EntityCache;
 import com.github.object.persistence.utils.FieldUtils;
 import com.github.object.persistence.utils.StringUtils;
 

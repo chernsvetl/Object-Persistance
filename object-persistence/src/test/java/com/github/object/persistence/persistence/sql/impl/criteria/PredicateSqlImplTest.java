@@ -1,6 +1,6 @@
 package com.github.object.persistence.persistence.sql.impl.criteria;
 
-import com.github.object.persistence.criteria.Predicate;
+import com.github.object.persistence.query.Predicate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

@@ -5,8 +5,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.github.object.persistence.criteria.Predicate;
-import com.github.object.persistence.criteria.PredicateBuilder;
+import com.github.object.persistence.query.Predicate;
+import com.github.object.persistence.query.PredicateBuilder;
 
 public final class PredicateBuilderSqlImpl implements PredicateBuilder {
 

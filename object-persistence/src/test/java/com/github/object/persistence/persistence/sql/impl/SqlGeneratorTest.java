@@ -1,7 +1,7 @@
 package com.github.object.persistence.persistence.sql.impl;
 
-import com.github.object.persistence.core.EntityCache;
-import com.github.object.persistence.core.EntityInfoImpl;
+import com.github.object.persistence.entity.EntityCache;
+import com.github.object.persistence.entity.EntityInfoImpl;
 import com.github.object.persistence.session.impl.SqlGenerator;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;

@@ -1,6 +1,6 @@
 package com.github.object.persistence.session;
 
-import com.github.object.persistence.criteria.Query;
+import com.github.object.persistence.query.Query;
 
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;

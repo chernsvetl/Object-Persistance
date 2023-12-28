@@ -1,9 +1,9 @@
 package com.github.object.persistence.persistence.common;
 
-import com.github.object.persistence.criteria.Predicate;
-import com.github.object.persistence.criteria.Query;
+import com.github.object.persistence.query.Predicate;
+import com.github.object.persistence.query.Query;
 import com.github.object.persistence.session.AbstractSession;
-import com.github.object.persistence.criteria.impl.QueryImpl;
+import com.github.object.persistence.query.impl.QueryImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
